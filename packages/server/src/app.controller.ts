@@ -26,6 +26,7 @@ export class AppController {
     params.etat_d_avancement = params.etat_d_avancement || '';
 
     return investments.filter(investment => {
+      // TODO we could add an additional flag change the OR search into and AND search where both criteria need to match
       return investment.ville === params.ville || investment.etat_d_avancement === params.etat_d_avancement;
     });
   }
