@@ -1,32 +1,32 @@
 import {Controller, Get, Query} from '@nestjs/common';
-import {AppService} from './app.service';
+import {ApiModelPropertyOptional} from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 import * as investments from './data/dataset.json';
-import {InvestmentInterface} from './data/investment.interface';
+import {IInvestment} from './data/investement.interface';
+
+class SearchParams {
+  @ApiModelPropertyOptional()
+  ville: string;
+
+  @ApiModelPropertyOptional()
+  etat_d_avancement: string;
+}
 
 @Controller('investments')
 export class AppController {
-  constructor(private readonly appService: AppService) {
+  constructor() {
   }
 
   @Get()
-  getAll(): InvestmentInterface[] {
-    return investments.sort((a, b) => {
-      if (a.ville > b.ville) {
-        return 1;
-      }
+  getFiltered(@Query() params: SearchParams): IInvestment[] {
+    if (!params.ville && !params.etat_d_avancement) {
+      return investments;
+    }
 
-      if (a.ville < b.ville) {
-        return -1;
-      }
+    params.ville = params.ville || '';
+    params.etat_d_avancement = params.etat_d_avancement || '';
 
-      return 0;
-    });
-  }
-
-  @Get('search')
-  getFiltered(@Query('ville') ville?: string): InvestmentInterface[] {
     return investments.filter(investment => {
-      return investment.ville === ville;
+      return investment.ville === params.ville || investment.etat_d_avancement === params.etat_d_avancement;
     });
   }
 }

@@ -1,4 +1,4 @@
-export interface InvestmentInterface {
+export interface IInvestment {
   annee_d_individualisation?: string;
   annee_de_livraison?: string;
   cao_attribution?: string;
