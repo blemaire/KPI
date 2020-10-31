@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import {Controller, Get} from '@nestjs/common';
+import {AppService} from './app.service';
+import * as data from './data/dataset.json';
+import {InvestmentInterface} from './data/investment.interface';
 
-@Controller('hello')
+@Controller('investments')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getAll(): InvestmentInterface[] {
+    return data;
   }
 }
